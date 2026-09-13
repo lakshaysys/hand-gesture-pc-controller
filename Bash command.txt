@@ -1,0 +1,15 @@
+# Initialize git and add all files
+git init
+git add .
+
+# Commit the files
+git commit -m "Initial commit: Hand Gesture PC Controller"
+
+# Rename branch to main
+git branch -M main
+
+# Link to your GitHub repository (Replace with YOUR repo URL)
+git remote add origin https://github.com/YOUR-USERNAME/hand-gesture-pc-controller.git
+
+# Push to GitHub
+git push -u origin main
