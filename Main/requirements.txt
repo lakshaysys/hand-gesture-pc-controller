@@ -2,3 +2,6 @@ opencv-python
 mediapipe
 pyautogui
 numpy
+opencv-python>=4.8.0
+mediapipe>=0.10.0
+pyautogui>=0.9.54
