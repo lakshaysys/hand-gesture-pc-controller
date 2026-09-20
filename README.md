@@ -1,14 +1,11 @@
 # 🖐️ Hand Gesture PC Controller
-
-A simple, webcam-based virtual mouse and keyboard controller for Windows, macOS, and Linux. Control your computer hands-free using computer vision and MediaPipe!
-
+A modern, high-performance webcam-based virtual mouse and keyboard controller for Windows, macOS, and Linux. Control your computer completely hands-free using computer vision, MediaPipe, and PyAutoGUI!
 ![Demo](docs/demo.gif) <!-- Replace with an actual GIF or screenshot of your project -->
-
-## ✨ Gestures
+## ✨ Gestures & Controls
 
 | Gesture | Action | Visual |
-| :--- | :--- | :---: |
-| **Index finger only** | Move Mouse | ☝️ |
+| :--- | :--- | :--- |
+| **Index finger only** | Move Mouse (Mapped with active frame boundaries) | ☝️ |
 | **Thumb + Index pinch** | Left Click | 🤏 |
 | **Index + Middle fingers** | Right Click | ✌️ |
 | **Open palm** | Pause / Stop Control | 🖐️ |
@@ -16,37 +13,14 @@ A simple, webcam-based virtual mouse and keyboard controller for Windows, macOS,
 | **Press 'Q'** | Quit Application | ⌨️ |
 
 ## 🛠️ Prerequisites
-
 - Python 3.10 or newer
 - A working Webcam
 - *(macOS users)* Terminal/IDE granted **Accessibility** permissions in System Settings to allow `pyautogui` to control the mouse/keyboard.
-
 ## 🚀 Installation
-
 1. Clone this repository:
 ```bash
-   git clone https://github.com/your-username/hand-gesture-pc-controller.git
+   git clone [https://github.com/lakshaysys/hand-gesture-pc-controller.git](https://github.com/lakshaysys/hand-gesture-pc-controller.git)
    cd hand-gesture-pc-controller
-```
-
-2. (Optional but recommended) Create a virtual environment:
-```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use: venv\Scripts\activate
-```
-
-3. Install the required dependencies:
-```bash
-   pip install -r requirements.txt
-```
-
-## ▶️ Usage
-
-Run the main script:
-```bash
-python main.py
-```
-A window will pop up showing your webcam feed with hand tracking overlays. Perform the gestures listed above to control your PC. Press **`Q`** in the webcam window to exit.
 
 ## 📝 Notes
 
