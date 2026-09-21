@@ -1,33 +1,41 @@
-# 🖐️ Hand Gesture PC Controller
-A modern, high-performance webcam-based virtual mouse and keyboard controller for Windows, macOS, and Linux. Control your computer completely hands-free using computer vision, MediaPipe, and PyAutoGUI!
-![Demo](docs/demo.gif) <!-- Replace with an actual GIF or screenshot of your project -->
-## ✨ Gestures & Controls
+# 🌟🖐️ Advanced Hand Gesture PC Controller 🖐️🌟
+<p align="center">
+  <em>Transform your workspace with next-generation computer vision and touchless desktop interaction.</em>
+</p>
+---
+## 🚀 Overview
+Welcome to the ultimate evolution of the **Hand Gesture PC Controller**! Powered by cutting-edge computer vision libraries like **OpenCV** and **MediaPipe**, this application turns any standard webcam into a high-precision, contactless virtual mouse and keyboard interface. Whether you want to navigate your screen, trigger clicks, or execute rapid keyboard macros, everything is controlled seamlessly through intuitive hand movements.
+---
+## ✨ Comprehensive Gesture Control Matrix
 
-| Gesture | Action | Visual |
-| :--- | :--- | :--- |
-| **Index finger only** | Move Mouse (Mapped with active frame boundaries) | ☝️ |
-| **Thumb + Index pinch** | Left Click | 🤏 |
-| **Index + Middle fingers** | Right Click | ✌️ |
-| **Open palm** | Pause / Stop Control | 🖐️ |
-| **Fist** | Press Spacebar | ✊ |
-| **Press 'Q'** | Quit Application | ⌨️ |
+| Gesture Command | Primary System Action | Visual Representation | Technical Trigger Logic |
+| :--- | :--- | :--- | :--- |
+| **Index Finger Only** | **Smooth Mouse Navigation** | ☝️ | Tracks single index landmark inside bounded active zone coordinates. |
+| **Thumb + Index Pinch** | **Left-Click Execution** | 🤏 | Evaluates Euclidean distance vector drop below threshold limits. |
+| **Index + Middle Fingers** | **Right-Click Contextual Menu** | ✌️ | Detects dual upper elevation state for secondary click actions. |
+| **Open Palm** | **Pause & Standby Mode** | 🖐️ | Registers all four primary digits raised simultaneously to hold tracking. |
+| **Fist Formation** | **Keyboard Spacebar Trigger** | ✊ | Closes all fingers entirely to execute automation commands. |
+| **Press 'Q' Key** | **Safe Application Exit** | ⌨️ | Gracefully terminates video capture loops and releases resources. |
 
-## 🛠️ Prerequisites
-- Python 3.10 or newer
-- A working Webcam
-- *(macOS users)* Terminal/IDE granted **Accessibility** permissions in System Settings to allow `pyautogui` to control the mouse/keyboard.
-## 🚀 Installation
-1. Clone this repository:
+---
+## 🛠️ System Prerequisites
+* **Python Environment:** Version `3.10` or newer installed on your machine.
+* **Hardware:** A standard built-in or external USB webcam with clear optical capture capability.
+* **OS-Specific Permissions:**
+  * **macOS:** Ensure your IDE or Terminal is granted explicit **Accessibility** and **Camera** rights under System Preferences.
+  * **Windows / Linux:** Verify that runtime script executions are permitted to control peripheral mouse/keyboard inputs via `PyAutoGUI`.
+---
+## 📦 Installation & Setup Instructions
+To get up and running locally, execute the following commands in your terminal:
 ```bash
-   git clone [https://github.com/lakshaysys/hand-gesture-pc-controller.git](https://github.com/lakshaysys/hand-gesture-pc-controller.git)
-   cd hand-gesture-pc-controller
-
-## 📝 Notes
-
-- **Lighting:** Ensure your hand is clearly visible and well-lit for the best tracking accuracy.
-- **Smoothing:** Cursor control is deliberately smoothed via an exponential moving average to reduce cursor shaking.
-- **Camera Permissions:** If the webcam doesn't open, ensure your OS has granted camera permissions to your terminal or IDE.
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+# 1. Clone the official repository
+git clone [https://github.com/lakshaysys/hand-gesture-pc-controller.git](https://github.com/lakshaysys/hand-gesture-pc-controller.git)
+cd hand-gesture-pc-controller
+# 2. Initialize a dedicated virtual environment (Recommended)
+python -m venv venv
+# Activate on Windows:
+venv\Scripts\activate
+# Activate on macOS/Linux:
+source venv/bin/activate
+# 3. Install required dependencies
+pip install -r requirements.txt
