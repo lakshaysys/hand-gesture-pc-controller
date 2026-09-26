@@ -5,13 +5,14 @@ import time
 import math
 
 """
-==============================
-HAND GESTURE PC CONTROLLER (V3)
-==============================
+======================================
+J.A.R.V.I.S. HAND GESTURE CONTROLLER V4
+======================================
 Gestures:
 - Index finger up          -> Move mouse
 - Pinch (thumb+index)      -> Left click (hold for drag-and-drop)
 - Index + Middle up        -> Right click
+- Thumb out + Pinky up     -> Virtual Air-Slider (Volume Control up/down)
 - Open palm                -> Pause / Stop mouse control
 - Fist                     -> Press Space
 - Two hands moving apart   -> Zoom Out (-)
@@ -40,6 +41,7 @@ smooth = 0.3
 last_click = 0
 last_space = 0
 last_zoom = 0
+last_vol_change = 0
 
 # Drag and drop state variables
 is_dragging = False
@@ -60,9 +62,8 @@ def fingers_up(hand):
         states.append(hand.landmark[tip].y < hand.landmark[pip].y)
     return states
 
-print("Hand Gesture Controller active. Press 'q' on the video window to quit.")
+print("J.A.R.V.I.S. Neural Interface active. Press 'q' on the video window to quit.")
 
-# Updated to detect up to 2 hands for zoom features
 with mp_hands.Hands(
     static_image_mode=False,
     max_num_hands=2,
@@ -81,23 +82,21 @@ with mp_hands.Hands(
         result = hands.process(rgb)
         
         gesture = "NO HAND"
+        active_volume_level = None  # For visual HUD bar
         
         # TWO-HAND GESTURES (Zoom In / Zoom Out)
         if result.multi_hand_landmarks and len(result.multi_hand_landmarks) == 2:
             hand1 = result.multi_hand_landmarks[0]
             hand2 = result.multi_hand_landmarks[1]
             
-            # Measure distance between wrists or center palms (using landmark 0 - wrist)
             hands_dist = dist(hand1.landmark[0], hand2.landmark[0])
             
             now = time.time()
-            if now - last_zoom > 0.4:  # Cooldown to prevent spamming
-                # Clap / Hands close together = Zoom In
+            if now - last_zoom > 0.4:
                 if hands_dist < 0.2:
                     gesture = "ZOOM IN"
                     pyautogui.hotkey('ctrl', '+')
                     last_zoom = now
-                # Hands far apart = Zoom Out
                 elif hands_dist > 0.6:
                     gesture = "ZOOM OUT"
                     pyautogui.hotkey('ctrl', '-')
@@ -117,8 +116,28 @@ with mp_hands.Hands(
             
             pinch = dist(lm[4], lm[8])
             
+            # Check for Shaka / Air-Slider Gesture (Thumb extended + Pinky up, Index/Middle/Ring down)
+            thumb_extended = dist(lm[4], lm[17]) > 0.15
+            is_volume_gesture = thumb_extended and pinky_up and not index_up and not middle_up and not ring_up
+            
+            if is_volume_gesture:
+                gesture = "VOLUME SLIDER"
+                now = time.time()
+                # Map vertical position of wrist (landmark 0) to volume steps
+                hand_y = lm[0].y  # 0.0 is top, 1.0 is bottom
+                active_volume_level = int((1.0 - hand_y) * 100) # Invert so up is higher volume
+                active_volume_level = max(0, min(100, active_volume_level))
+                
+                if now - last_vol_change > 0.15:
+                    if hand_y < 0.4:  # Hand is high up -> Volume Up
+                        pyautogui.press('volumeup')
+                        last_vol_change = now
+                    elif hand_y > 0.6:  # Hand is low down -> Volume Down
+                        pyautogui.press('volumedown')
+                        last_vol_change = now
+                        
             # 1) PINCH LOGIC (CLICK vs DRAG AND DROP)
-            if pinch < 0.05:
+            elif pinch < 0.05:
                 now = time.time()
                 if pinch_start_time == 0:
                     pinch_start_time = now
@@ -199,11 +218,19 @@ with mp_hands.Hands(
         cv2.rectangle(frame, (frame_margin, frame_margin), (w - frame_margin, h - frame_margin), (0, 255, 255), 2)
         
         # HUD Display Overlay
-        cv2.rectangle(frame, (15, 15), (450, 110), (20, 20, 20), -1)
-        cv2.putText(frame, "HAND PC CONTROLLER V3", (30, 45), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
+        cv2.rectangle(frame, (15, 15), (460, 120), (20, 20, 20), -1)
+        cv2.putText(frame, "J.A.R.V.I.S. INTERFACE V4", (30, 45), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
         
         gesture_color = (0, 0, 255) if is_dragging else (255, 255, 255)
-        cv2.putText(frame, f"Gesture: {gesture}", (30, 85), cv2.FONT_HERSHEY_SIMPLEX, 0.7, gesture_color, 2)
+        cv2.putText(frame, f"Gesture: {gesture}", (30, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.65, gesture_color, 2)
+        
+        # Draw Virtual Volume Bar HUD if Air-Slider is active
+        if active_volume_level is not None:
+            bar_x, bar_y, bar_w, bar_h = 500, 30, 30, 200
+            fill_h = int((active_volume_level / 100) * bar_h)
+            cv2.rectangle(frame, (bar_x, bar_y), (bar_x + bar_w, bar_y + bar_h), (50, 50, 50), 2)
+            cv2.rectangle(frame, (bar_x, bar_y + bar_h - fill_h), (bar_x + bar_w, bar_y + bar_h), (0, 255, 0), -1)
+            cv2.putText(frame, f"VOL: {active_volume_level}%", (bar_x - 10, bar_y + bar_h + 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         
         cv2.imshow("Hand Gesture PC Controller", frame)
         
@@ -212,4 +239,4 @@ with mp_hands.Hands(
 
 cap.release()
 cv2.destroyAllWindows()
-            
+                
