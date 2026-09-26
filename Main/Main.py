@@ -6,7 +6,7 @@ import math
 
 """
 ======================================
-J.A.R.V.I.S. HAND GESTURE CONTROLLER V4
+HAND GESTURE CONTROLLER V4
 ======================================
 Gestures:
 - Index finger up          -> Move mouse
