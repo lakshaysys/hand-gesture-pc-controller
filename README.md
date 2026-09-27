@@ -1,4 +1,4 @@
-# 🌟🖐️ Advanced Hand Gesture PC Controller (V3) 🖐️🌟
+# 🌟🖐️ Advanced Hand Gesture PC Controller (V4) 🖐️🌟
 
 <p align="center">
   <em>Transform your workspace with next-generation computer vision, multi-hand tracking, and touchless desktop interaction.</em>
@@ -8,9 +8,9 @@
 
 ## 🚀 Overview
 
-Welcome to the ultimate evolution of the **Hand Gesture PC Controller**! Powered by cutting-edge computer vision libraries like **OpenCV** and **MediaPipe**, this application turns any standard webcam into a high-precision, contactless virtual mouse, keyboard, and gesture-control interface. 
+Welcome to the ultimate evolution of the **Hand Gesture PC Controller (V4)**! Powered by cutting-edge computer vision libraries like **OpenCV** and **MediaPipe**, this application turns any standard webcam into a high-precision, contactless virtual mouse, keyboard, media controller, and gesture-control interface. 
 
-With newly added **multi-hand support**, you can now smoothly navigate screens, execute precise clicks, drag-and-drop files, and zoom in or out using natural hand movements.
+Featuring advanced **multi-hand support**, dynamic boundary tracking, drag-and-drop state machines, and a real-time HUD, you can smoothly navigate screens, execute precise clicks, adjust volume with an air-slider, and zoom in or out using natural hand movements.
 
 ---
 
@@ -22,6 +22,7 @@ With newly added **multi-hand support**, you can now smoothly navigate screens, 
 | **Thumb + Index Pinch (Tap)** | **Left-Click Execution** | 🤏 | Quick Euclidean distance drop below threshold triggers click. |
 | **Thumb + Index Pinch (Hold)**| **Drag-and-Drop Feature** | 🤏⏱️ | Holding pinch past 0.3 seconds engages `mouseDown` for dragging items. |
 | **Index + Middle Fingers** | **Right-Click Contextual Menu** | ✌️ | Detects dual upper elevation state for secondary click actions. |
+| **Thumb Out + Pinky Up** | **Virtual Air-Slider (Volume)** | 🤙 | Shaka-style pose tracking vertical wrist position to change volume up/down. |
 | **Open Palm** | **Pause & Standby Mode** | 🖐️ | Registers all four primary digits raised simultaneously to hold tracking. |
 | **Fist Formation** | **Keyboard Spacebar Trigger** | ✊ | Closes all fingers entirely to execute automation commands. |
 | **Two Hands Moving Apart** | **Zoom Out (-)** | 👐 | Tracks distance between dual wrists expanding to trigger screen zoom-out. |
@@ -46,7 +47,7 @@ To get up and running locally, execute the following commands in your terminal:
 
 ```bash
 # 1. Clone the official repository
-git clone [https://github.com/lakshaysys/hand-gesture-pc-controller.git](https://github.com/lakshaysys/hand-gesture-pc-controller.git)
+git clone https://github.com/lakshaysys/hand-gesture-pc-controller.git
 cd hand-gesture-pc-controller
 
 # 2. Initialize a dedicated virtual environment (Recommended)
@@ -59,4 +60,17 @@ venv\Scripts\activate
 source venv/bin/activate
 
 # 3. Install required dependencies
-pip install -r requirements.txt
+pip install opencv-python mediapipe pyautogui
+```
+
+---
+
+## 🎮 Running the Controller
+
+Once dependencies are installed and your webcam is plugged in, launch the script:
+
+```bash
+python main.py
+```
+
+*Look for the live camera HUD window, position your hand inside the yellow bounding box, and start controlling your desktop seamlessly! Press `q` anytime to quit.*
